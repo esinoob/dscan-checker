@@ -2,6 +2,13 @@
 
 A compact, always-on-top Electron app for EVE Online that auto-detects D-Scan data from your clipboard and displays ship counts with change tracking.
 
+## Screenshots
+
+![1](https://github.com/user-attachments/assets/6551509f-3764-4d54-9bb3-b87e3d798ab0)
+![2](https://github.com/user-attachments/assets/14c3fd27-baa5-4e79-90e0-03ebeec1fe74)
+![3](https://github.com/user-attachments/assets/c1b6860f-ce05-4ffc-b99d-4542c2d15baa)
+![4](https://github.com/user-attachments/assets/67f8f78e-ddef-4b27-b2dd-4d0bca02474a)
+
 ## Features
 
 - **Auto-detect** -- copies D-Scan from EVE, results appear instantly
