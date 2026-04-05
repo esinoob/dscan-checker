@@ -1,6 +1,6 @@
 {
   "name": "dscan-checker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "EVE Online D-Scan checker with auto clipboard detection",
   "main": "main.js",
   "scripts": {

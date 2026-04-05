@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SDE_PATH = process.argv[2] || path.resolve(ROOT, 'evesde');
+const SDE_PATH = process.argv[2] || path.join(__dirname, 'evesde');
 
 const SHIP_GROUP_IDS = new Set([
   25, 26, 27, 28, 30, 31, 237, 324, 358, 380, 419, 420, 463, 485, 513,
@@ -43,8 +43,7 @@ for (const t of readJsonl('types.jsonl')) {
   if (t.published && SHIP_GROUP_IDS.has(t.groupID) && t.name && t.name.en) {
     ships[t.name.en] = {
       typeID: t._key,
-      groupID: t.groupID,
-      groupName: groups[t.groupID] || 'Unknown'
+      groupID: t.groupID
     };
     count++;
   }
@@ -60,6 +59,7 @@ for (const [superName, groupIds] of Object.entries(SUPER_GROUPS)) {
 
 // Add metadata
 ships.__meta = {
+  groups,
   superGroups: SUPER_GROUPS,
   groupToSuper,
   extractedAt: new Date().toISOString()

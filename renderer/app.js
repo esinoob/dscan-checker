@@ -172,7 +172,7 @@ function groupScan(counts) {
     const ship = shipDb[typeName];
     if (!ship) continue;
     const superGroup = meta.groupToSuper[ship.groupID] || 'Other';
-    const groupName = ship.groupName;
+    const groupName = meta.groups[ship.groupID];
 
     if (!grouped[superGroup]) grouped[superGroup] = {};
     if (!grouped[superGroup][groupName]) grouped[superGroup][groupName] = [];
@@ -240,7 +240,7 @@ function renderColumns(minCount, deltas) {
   for (const [typeName, count] of Object.entries(merged)) {
     const ship = shipDb[typeName];
     if (!ship) continue;
-    const gn = ship.groupName;
+    const gn = meta.groups[ship.groupID];
     if (!groupTotals[gn]) groupTotals[gn] = { count: 0, delta: 0 };
     groupTotals[gn].count += count;
     groupTotals[gn].delta += (deltas[typeName] || 0);
@@ -252,7 +252,7 @@ function renderColumns(minCount, deltas) {
   let typesHtml = '';
   for (const [typeName, count] of typeEntries) {
     const ship = shipDb[typeName];
-    const groupName = ship ? ship.groupName : '';
+    const groupName = ship ? meta.groups[ship.groupID] : '';
     const d = deltas[typeName] || 0;
     typesHtml += `<div class="row type-row" data-group="${esc(groupName)}"><span class="row-name">${esc(typeName)}</span><span class="row-count">${count}</span><span class="row-delta">${formatDelta(d)}</span></div>`;
   }
