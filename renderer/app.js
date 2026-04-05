@@ -188,7 +188,13 @@ function groupScan(counts) {
   return grouped;
 }
 
-const SUPER_ORDER = ['Capitals', 'Battleships', 'Battlecruisers', 'Cruisers', 'Destroyers', 'Frigates', 'Industrial', 'Other'];
+// Super-group display order from ships.json metadata (sorted by avg ship mass, biggest first)
+function getSuperOrder() {
+  if (!shipDb || !shipDb.__meta || !shipDb.__meta.superGroupOrder) {
+    return Object.keys(shipDb?.__meta?.superGroups || {});
+  }
+  return shipDb.__meta.superGroupOrder;
+}
 
 // ── Rendering ──
 
@@ -276,7 +282,7 @@ function renderGrouped(minCount, deltas) {
   const grouped = groupScan(merged);
   let html = '';
 
-  for (const superName of SUPER_ORDER) {
+  for (const superName of getSuperOrder()) {
     const groups = grouped[superName];
     if (!groups) continue;
 

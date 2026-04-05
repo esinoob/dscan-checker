@@ -167,6 +167,10 @@
     "typeID": 634,
     "groupID": 26
   },
+  "Opux Luxury Yacht": {
+    "typeID": 635,
+    "groupID": 5087
+  },
   "Raven": {
     "typeID": 638,
     "groupID": 27
@@ -238,6 +242,10 @@
   "Iteron Mark V": {
     "typeID": 657,
     "groupID": 28
+  },
+  "Capsule": {
+    "typeID": 670,
+    "groupID": 29
   },
   "Erebus": {
     "typeID": 671,
@@ -1127,6 +1135,10 @@
     "typeID": 33157,
     "groupID": 419
   },
+  "Capsule - Genolution 'Auroral' 197-variant": {
+    "typeID": 33328,
+    "groupID": 29
+  },
   "Moracha": {
     "typeID": 33395,
     "groupID": 833
@@ -1194,6 +1206,10 @@
   "Svipul": {
     "typeID": 34562,
     "groupID": 1305
+  },
+  "Victorieux Luxury Yacht": {
+    "typeID": 34590,
+    "groupID": 5087
   },
   "Jackdaw": {
     "typeID": 34828,
@@ -1511,6 +1527,22 @@
     "typeID": 77114,
     "groupID": 25
   },
+  "Hubris": {
+    "typeID": 77281,
+    "groupID": 4594
+  },
+  "Bane": {
+    "typeID": 77283,
+    "groupID": 4594
+  },
+  "Karura": {
+    "typeID": 77284,
+    "groupID": 4594
+  },
+  "Valravn": {
+    "typeID": 77288,
+    "groupID": 4594
+  },
   "Cybele": {
     "typeID": 77726,
     "groupID": 358
@@ -1587,6 +1619,10 @@
     "typeID": 89240,
     "groupID": 420
   },
+  "Odysseus": {
+    "typeID": 89607,
+    "groupID": 4902
+  },
   "Pioneer Consortium Issue": {
     "typeID": 89647,
     "groupID": 420
@@ -1611,12 +1647,25 @@
     "typeID": 91174,
     "groupID": 420
   },
+  "Tenzin YC128 Campaign Bus": {
+    "typeID": 92282,
+    "groupID": 5087
+  },
+  "Moreau YC128 Campaign Bus": {
+    "typeID": 92283,
+    "groupID": 5087
+  },
+  "Roden YC128 Campaign Bus": {
+    "typeID": 92284,
+    "groupID": 5087
+  },
   "__meta": {
     "groups": {
       "25": "Frigate",
       "26": "Cruiser",
       "27": "Battleship",
       "28": "Hauler",
+      "29": "Capsule",
       "30": "Titan",
       "31": "Shuttle",
       "237": "Corvette",
@@ -1655,26 +1704,21 @@
       "1527": "Logistics Frigate",
       "1534": "Command Destroyer",
       "1538": "Force Auxiliary",
-      "1972": "Flag Cruiser"
+      "1972": "Flag Cruiser",
+      "4594": "Lancer Dreadnought",
+      "4902": "Expedition Command Ship",
+      "5087": "Special Edition Yachts"
     },
     "superGroups": {
-      "Capitals": [
-        485,
-        547,
-        659,
-        883,
-        1538
-      ],
-      "Battleships": [
-        27,
-        898,
-        900
-      ],
-      "Battlecruisers": [
-        419,
-        513,
-        540,
-        1201
+      "Frigates": [
+        25,
+        324,
+        830,
+        831,
+        834,
+        893,
+        1283,
+        1527
       ],
       "Cruisers": [
         26,
@@ -1686,83 +1730,121 @@
         963,
         1972
       ],
+      "Battleships": [
+        27,
+        898,
+        900
+      ],
+      "Haulers and Industrial Ships": [
+        28,
+        380,
+        941,
+        1202
+      ],
+      "Other": [
+        29
+      ],
+      "Capital Ships": [
+        30,
+        485,
+        513,
+        547,
+        659,
+        883,
+        902,
+        1538,
+        4594
+      ],
+      "Shuttles": [
+        31
+      ],
+      "Corvettes": [
+        237
+      ],
+      "Battlecruisers": [
+        419,
+        540,
+        1201,
+        4902
+      ],
       "Destroyers": [
         420,
         541,
         1305,
         1534
       ],
-      "Frigates": [
-        25,
-        324,
-        830,
-        831,
-        834,
-        893,
-        1283,
-        1527
-      ],
-      "Industrial": [
-        28,
-        380,
+      "Mining Barges": [
         463,
-        543,
-        902,
-        941,
-        1202
+        543
       ],
-      "Other": [
-        30,
-        31,
-        237,
-        1022
+      "Special Edition Ships": [
+        1022,
+        5087
       ]
     },
+    "superGroupOrder": [
+      "Capital Ships",
+      "Battleships",
+      "Haulers and Industrial Ships",
+      "Special Edition Ships",
+      "Mining Barges",
+      "Battlecruisers",
+      "Cruisers",
+      "Other",
+      "Shuttles",
+      "Destroyers",
+      "Corvettes",
+      "Frigates"
+    ],
     "groupToSuper": {
       "25": "Frigates",
       "26": "Cruisers",
       "27": "Battleships",
-      "28": "Industrial",
-      "30": "Other",
-      "31": "Other",
-      "237": "Other",
+      "28": "Haulers and Industrial Ships",
+      "29": "Other",
+      "30": "Capital Ships",
+      "31": "Shuttles",
+      "237": "Corvettes",
       "324": "Frigates",
       "358": "Cruisers",
-      "380": "Industrial",
+      "380": "Haulers and Industrial Ships",
       "419": "Battlecruisers",
       "420": "Destroyers",
-      "463": "Industrial",
-      "485": "Capitals",
-      "513": "Battlecruisers",
+      "463": "Mining Barges",
+      "485": "Capital Ships",
+      "513": "Capital Ships",
       "540": "Battlecruisers",
       "541": "Destroyers",
-      "543": "Industrial",
-      "547": "Capitals",
-      "659": "Capitals",
+      "543": "Mining Barges",
+      "547": "Capital Ships",
+      "659": "Capital Ships",
       "830": "Frigates",
       "831": "Frigates",
       "832": "Cruisers",
       "833": "Cruisers",
       "834": "Frigates",
-      "883": "Capitals",
+      "883": "Capital Ships",
       "893": "Frigates",
       "894": "Cruisers",
       "898": "Battleships",
       "900": "Battleships",
-      "902": "Industrial",
+      "902": "Capital Ships",
       "906": "Cruisers",
-      "941": "Industrial",
+      "941": "Haulers and Industrial Ships",
       "963": "Cruisers",
-      "1022": "Other",
+      "1022": "Special Edition Ships",
       "1201": "Battlecruisers",
-      "1202": "Industrial",
+      "1202": "Haulers and Industrial Ships",
       "1283": "Frigates",
       "1305": "Destroyers",
       "1527": "Frigates",
       "1534": "Destroyers",
-      "1538": "Capitals",
-      "1972": "Cruisers"
+      "1538": "Capital Ships",
+      "1972": "Cruisers",
+      "4594": "Capital Ships",
+      "4902": "Battlecruisers",
+      "5087": "Special Edition Ships"
     },
-    "extractedAt": "2026-04-05T09:22:43.248Z"
+    "extractedAt": "2026-04-05T11:35:03.154Z"
   }
 }
