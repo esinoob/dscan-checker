@@ -6,5 +6,6 @@ contextBridge.exposeInMainWorld('dscan', {
   getScanHistory: () => ipcRenderer.invoke('get-scan-history'),
   saveScan: (scan) => ipcRenderer.invoke('save-scan', scan),
   screenshot: () => ipcRenderer.invoke('screenshot'),
-  toggleOnTop: () => ipcRenderer.invoke('toggle-on-top')
+  toggleOnTop: () => ipcRenderer.invoke('toggle-on-top'),
+  closeApp: () => ipcRenderer.invoke('close-app')
 });

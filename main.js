@@ -50,6 +50,10 @@ ipcMain.handle('toggle-on-top', () => {
   return !current;
 });
 
+ipcMain.handle('close-app', () => {
+  win.close();
+});
+
 ipcMain.handle('screenshot', async () => {
   const image = await win.capturePage();
   clipboard.writeImage(image);

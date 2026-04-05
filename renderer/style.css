@@ -43,6 +43,11 @@ body {
   color: #8b949e;
 }
 
+.system-name {
+  color: #8b949e;
+  font-size: 10px;
+}
+
 .header-right {
   -webkit-app-region: no-drag;
   display: flex;
@@ -50,20 +55,19 @@ body {
   gap: 4px;
 }
 
-.header-right label {
-  color: #8b949e;
-  font-size: 11px;
+.close-btn {
+  background: none;
+  border: none;
+  color: #484f58;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  -webkit-app-region: no-drag;
 }
 
-.header-right input {
-  width: 42px;
-  background: #0d1117;
-  border: 1px solid #30363d;
-  color: #c9d1d9;
-  padding: 2px 4px;
-  font-size: 12px;
-  border-radius: 3px;
-  text-align: center;
+.close-btn:hover {
+  color: #f85149;
 }
 
 /* ── Two-column layout ── */

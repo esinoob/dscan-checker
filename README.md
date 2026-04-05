@@ -15,7 +15,9 @@ A compact, always-on-top Electron app for EVE Online that auto-detects D-Scan da
 - **Two views** -- column view (ships + groups side by side with hover cross-highlighting) or grouped view (hierarchical by ship class)
 - **Delta tracking** -- green/red +/- indicators show what changed between scans, including ships that disappeared entirely
 - **Scan history** -- every scan is saved automatically, browse back with prev/next arrows
-- **Min-count filter** -- hide low-count ship types
+- **System name** -- auto-detected from D-Scan entries and shown in the header
+- **Grid filter** -- toggle between All / On-grid / Off-grid ships (off-grid = distance shows `-`)
+- **Font size** -- adjustable via A-/A+ buttons, persisted across sessions
 - **Screenshot** -- capture the window to clipboard with one click
 - **Always-on-top toggle** -- pin/unpin the window over your game
 - **Frameless & compact** -- minimal footprint, remembers window position and size
@@ -54,10 +56,12 @@ Copy a new D-Scan to see deltas (changes) from the previous scan. Use the arrows
 
 | Button | Action |
 |--------|--------|
-| Min filter | Hide ship types below a count threshold |
+| `✕` | Close the app (top-right) |
 | `◀` `▶` | Browse scan history |
 | `📌` | Toggle always-on-top |
 | `📷` | Screenshot to clipboard |
+| `All` / `On` / `Off` | Cycle grid filter |
+| `A-` `A+` | Decrease / increase font size |
 | `↔` | Toggle between column and grouped view |
 
 ## Ship Database

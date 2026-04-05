@@ -2,10 +2,13 @@ let shipDb = null;
 let meta = null;
 let previousScan = null;
 let currentScan = null;
+let currentScanRaw = null;  // { onGrid, offGrid, systemName }
+let previousScanRaw = null;
 let lastClipboard = '';
 let scanHistory = [];    // saved scans from disk
 let viewingIndex = -1;   // -1 = live view, 0+ = viewing saved scan
 let viewMode = 'columns'; // 'columns' or 'grouped'
+let gridFilter = 'both'; // 'both' | 'on' | 'off'
 
 // DOM refs
 const typeListEl = document.getElementById('typeList');
@@ -13,7 +16,6 @@ const groupListEl = document.getElementById('groupList');
 const totalCountEl = document.getElementById('totalCount');
 const deltaTotalEl = document.getElementById('deltaTotal');
 const lastScanEl = document.getElementById('lastScan');
-const minCountEl = document.getElementById('minCount');
 const btnPrev = document.getElementById('btnPrev');
 const btnNext = document.getElementById('btnNext');
 const btnView = document.getElementById('btnView');
@@ -21,6 +23,8 @@ const historyPosEl = document.getElementById('historyPos');
 const btnScreenshot = document.getElementById('btnScreenshot');
 const viewColumnsEl = document.getElementById('viewColumns');
 const viewGroupedEl = document.getElementById('viewGrouped');
+const systemNameEl = document.getElementById('systemName');
+const btnGrid = document.getElementById('btnGrid');
 
 // ── Init: load ship data via IPC ──
 
@@ -59,17 +63,37 @@ function viewScan(index) {
   updateHistoryUI();
 }
 
+function savedToRaw(saved) {
+  if (saved.onGrid || saved.offGrid) {
+    return { onGrid: saved.onGrid || {}, offGrid: saved.offGrid || {}, systemName: saved.systemName || '' };
+  }
+  // Backward compat: old scans without grid data
+  return { onGrid: saved.counts, offGrid: {}, systemName: saved.systemName || '' };
+}
+
 function renderSaved(saved) {
   const tmpCurrent = currentScan;
   const tmpPrevious = previousScan;
-  currentScan = saved.counts;
+  const tmpRaw = currentScanRaw;
+  const tmpPrevRaw = previousScanRaw;
+
+  currentScanRaw = savedToRaw(saved);
+  currentScan = mergeGridCounts(currentScanRaw, gridFilter);
   // Show delta against previous scan in history
   const prevIndex = viewingIndex - 1;
-  previousScan = prevIndex >= 0 ? scanHistory[prevIndex].counts : null;
+  if (prevIndex >= 0) {
+    previousScanRaw = savedToRaw(scanHistory[prevIndex]);
+    previousScan = mergeGridCounts(previousScanRaw, gridFilter);
+  } else {
+    previousScanRaw = null;
+    previousScan = null;
+  }
   lastScanEl.textContent = saved.label || new Date(saved.time).toLocaleString();
   render();
   currentScan = tmpCurrent;
   previousScan = tmpPrevious;
+  currentScanRaw = tmpRaw;
+  previousScanRaw = tmpPrevRaw;
 }
 
 btnPrev.addEventListener('click', () => {
@@ -113,6 +137,24 @@ btnView.addEventListener('click', () => {
   render();
 });
 
+const gridLabels = { both: 'All', on: 'On', off: 'Off' };
+const gridCycle = { both: 'on', on: 'off', off: 'both' };
+
+btnGrid.addEventListener('click', () => {
+  gridFilter = gridCycle[gridFilter];
+  btnGrid.textContent = gridLabels[gridFilter];
+  btnGrid.title = 'Grid filter: ' + gridLabels[gridFilter];
+  btnGrid.classList.toggle('nav-btn-active', gridFilter !== 'both');
+  // Recompute currentScan from raw data
+  if (currentScanRaw) {
+    currentScan = mergeGridCounts(currentScanRaw, gridFilter);
+  }
+  if (previousScanRaw) {
+    previousScan = mergeGridCounts(previousScanRaw, gridFilter);
+  }
+  render();
+});
+
 // ── D-Scan Detection ──
 
 function isDscan(text) {
@@ -135,19 +177,58 @@ function isDscan(text) {
 
 // ── Parsing ──
 
+function isOffGrid(distStr) {
+  return distStr.trim() === '-';
+}
+
 function parseDscan(text) {
   const lines = text.split(/\r?\n/).filter(l => l.trim());
-  const counts = {};
+  const onGrid = {};
+  const offGrid = {};
+  const systemCandidates = {};
 
   for (const line of lines) {
     const cols = line.split('\t');
     if (cols.length < 4) continue;
     const typeName = cols[2].trim();
+    const dist = cols[3].trim();
+
     if (shipDb[typeName]) {
-      counts[typeName] = (counts[typeName] || 0) + 1;
+      const bucket = isOffGrid(dist) ? offGrid : onGrid;
+      bucket[typeName] = (bucket[typeName] || 0) + 1;
+    }
+
+    // System name extraction from non-ship entries with " - " pattern
+    if (!shipDb[typeName]) {
+      const objName = cols[1].trim();
+      const dashIdx = objName.indexOf(' - ');
+      if (dashIdx > 0) {
+        const candidate = objName.substring(0, dashIdx);
+        systemCandidates[candidate] = (systemCandidates[candidate] || 0) + 1;
+      }
     }
   }
-  return counts;
+
+  // Pick the most common system name candidate
+  let systemName = '';
+  let maxCount = 0;
+  for (const [name, count] of Object.entries(systemCandidates)) {
+    if (count > maxCount) { maxCount = count; systemName = name; }
+  }
+
+  return { onGrid, offGrid, systemName };
+}
+
+function mergeGridCounts(raw, filter) {
+  if (!raw) return {};
+  if (filter === 'on') return { ...raw.onGrid };
+  if (filter === 'off') return { ...raw.offGrid };
+  // 'both' — merge
+  const merged = { ...raw.onGrid };
+  for (const [k, v] of Object.entries(raw.offGrid)) {
+    merged[k] = (merged[k] || 0) + v;
+  }
+  return merged;
 }
 
 // ── Diffing ──
@@ -201,7 +282,7 @@ function getSuperOrder() {
 function render() {
   if (!currentScan) return;
 
-  const minCount = parseInt(minCountEl.value) || 1;
+  const minCount = 1;
   const deltas = diffScans(currentScan, previousScan);
 
   let totalShips = 0;
@@ -213,6 +294,8 @@ function render() {
   }
 
   totalCountEl.textContent = `${totalShips} ships`;
+  const sysName = currentScanRaw ? currentScanRaw.systemName : '';
+  systemNameEl.textContent = sysName ? `@ ${sysName}` : '';
   const totalDelta = previousScan ? totalShips - prevTotal : 0;
   if (totalDelta > 0) {
     deltaTotalEl.textContent = `+${totalDelta}`;
@@ -364,11 +447,16 @@ async function pollClipboard() {
     if (text && text !== lastClipboard) {
       lastClipboard = text;
       if (isDscan(text)) {
+        previousScanRaw = currentScanRaw;
         previousScan = currentScan;
-        currentScan = parseDscan(text);
+        currentScanRaw = parseDscan(text);
+        currentScan = mergeGridCounts(currentScanRaw, gridFilter);
         // Auto-save every scan
         const scan = {
-          counts: { ...currentScan },
+          counts: mergeGridCounts(currentScanRaw, 'both'),
+          onGrid: { ...currentScanRaw.onGrid },
+          offGrid: { ...currentScanRaw.offGrid },
+          systemName: currentScanRaw.systemName,
           time: Date.now(),
           label: 'Scan ' + new Date().toLocaleTimeString()
         };
@@ -385,5 +473,33 @@ async function pollClipboard() {
   }
 }
 
-// Re-render on filter change
-minCountEl.addEventListener('input', render);
+// ── Font Size ──
+
+const btnFontUp = document.getElementById('btnFontUp');
+const btnFontDown = document.getElementById('btnFontDown');
+const MIN_FONT = 8;
+const MAX_FONT = 18;
+let fontSize = parseInt(localStorage.getItem('fontSize')) || 11;
+document.body.style.fontSize = fontSize + 'px';
+
+btnFontUp.addEventListener('click', () => {
+  if (fontSize < MAX_FONT) {
+    fontSize++;
+    document.body.style.fontSize = fontSize + 'px';
+    localStorage.setItem('fontSize', fontSize);
+  }
+});
+
+btnFontDown.addEventListener('click', () => {
+  if (fontSize > MIN_FONT) {
+    fontSize--;
+    document.body.style.fontSize = fontSize + 'px';
+    localStorage.setItem('fontSize', fontSize);
+  }
+});
+
+// ── Close Button ──
+
+document.getElementById('btnClose').addEventListener('click', () => {
+  window.dscan.closeApp();
+});
