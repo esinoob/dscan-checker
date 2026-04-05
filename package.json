@@ -1,0 +1,40 @@
+{
+  "name": "dscan-checker",
+  "version": "1.0.0",
+  "description": "EVE Online D-Scan checker with auto clipboard detection",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "extract": "node tools/extract-ships.js",
+    "build": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build:mac": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.dscan-checker",
+    "productName": "D-Scan Checker",
+    "icon": "icon.png",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "ships.json",
+      "icon.png"
+    ],
+    "win": {
+      "target": "portable",
+      "signAndEditExecutable": false
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "mac": {
+      "target": "dmg"
+    }
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^26.8.1",
+    "sharp": "^0.34.5"
+  }
+}

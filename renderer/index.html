@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D-Scan Checker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <span class="title">D-Scan</span>
+      <span id="totalCount" class="total">0 ships</span>
+      <span id="deltaTotal" class="delta"></span>
+    </div>
+    <div class="header-right">
+      <label for="minCount">Min:</label>
+      <input type="number" id="minCount" value="1" min="1" max="999">
+    </div>
+  </div>
+
+  <div id="viewColumns" class="columns">
+    <div class="col col-types">
+      <div class="col-header">Ships</div>
+      <div id="typeList" class="col-body">
+        <div class="placeholder">Copy a D-Scan to clipboard...</div>
+      </div>
+    </div>
+    <div class="col col-groups">
+      <div class="col-header">Groups</div>
+      <div id="groupList" class="col-body"></div>
+    </div>
+  </div>
+
+  <div id="viewGrouped" class="scan-list" style="display:none"></div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <span id="lastScan">No scan yet</span>
+    </div>
+    <div class="footer-right">
+      <button id="btnPrev" class="nav-btn" title="Previous scan">&#9664;</button>
+      <span id="historyPos" class="history-pos"></span>
+      <button id="btnNext" class="nav-btn" title="Next scan / Live">&#9654;</button>
+      <button id="btnPin" class="nav-btn nav-btn-active" title="Toggle always on top">&#128204;</button>
+      <button id="btnScreenshot" class="nav-btn" title="Screenshot">&#128247;</button>
+      <button id="btnView" class="nav-btn" title="Toggle view">&#8596;</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
