@@ -217,7 +217,7 @@ function parseDscan(text) {
       const objName = cols[1].trim();
       const dashIdx = objName.indexOf(' - ');
       if (dashIdx > 0) {
-        const candidate = objName.substring(0, dashIdx);
+        const candidate = objName.substring(0, dashIdx).replace(/ [IVXLC]+$/, '');
         systemCandidates[candidate] = (systemCandidates[candidate] || 0) + 1;
       }
     }
