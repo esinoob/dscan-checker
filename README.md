@@ -62,14 +62,14 @@ Copy a new D-Scan to see deltas (changes) from the previous scan. Use the arrows
 
 ## Ship Database
 
-The app uses `ships.json` which contains EVE ship types and their group/class mappings. To regenerate from the EVE SDE:
+The app uses `ships.json` which contains EVE ship types and their group/class mappings, all derived from the EVE SDE. Ship groups are detected by category, and the super-group hierarchy (Capital Ships, Battleships, etc.) is built from the market group tree — no hardcoded IDs. To regenerate:
 
 ```bash
-# Default: looks for JSONL files in ./evesde/
+# Default: looks for JSONL files in tools/evesde/
 npm run extract
 
 # Or specify a custom path:
 node tools/extract-ships.js /path/to/evesde
 ```
 
-Requires `types.jsonl` and `groups.jsonl` from the EVE Static Data Export.
+Requires `types.jsonl`, `groups.jsonl`, and `marketGroups.jsonl` from the EVE Static Data Export.
