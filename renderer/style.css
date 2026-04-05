@@ -309,3 +309,8 @@ body {
   border-color: #58a6ff;
 }
 
+.nav-btn-delete:hover {
+  color: #f85149;
+  border-color: #f85149;
+}
+

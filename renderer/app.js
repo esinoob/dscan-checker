@@ -49,6 +49,7 @@ function updateHistoryUI() {
   } else {
     historyPosEl.textContent = `${viewingIndex + 1}/${scanHistory.length}`;
   }
+  btnDelete.style.display = isLive ? 'none' : '';
 }
 
 function viewScan(index) {
@@ -120,10 +121,23 @@ btnNext.addEventListener('click', () => {
 });
 
 const btnPin = document.getElementById('btnPin');
+const btnDelete = document.getElementById('btnDelete');
 
 btnPin.addEventListener('click', async () => {
   const isOnTop = await window.dscan.toggleOnTop();
   btnPin.classList.toggle('nav-btn-active', isOnTop);
+});
+
+btnDelete.addEventListener('click', async () => {
+  if (viewingIndex === -1) return;
+  scanHistory = await window.dscan.deleteScan(viewingIndex);
+  if (scanHistory.length === 0) {
+    viewScan(-1);
+  } else if (viewingIndex >= scanHistory.length) {
+    viewScan(scanHistory.length - 1);
+  } else {
+    viewScan(viewingIndex);
+  }
 });
 
 btnScreenshot.addEventListener('click', () => {

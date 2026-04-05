@@ -14,7 +14,7 @@ function loadBounds() {
   try {
     return JSON.parse(fs.readFileSync(boundsPath, 'utf8'));
   } catch {
-    return { width: 300, height: 380 };
+    return { width: 350, height: 380 };
   }
 }
 
@@ -52,6 +52,15 @@ ipcMain.handle('toggle-on-top', () => {
 
 ipcMain.handle('close-app', () => {
   win.close();
+});
+
+ipcMain.handle('delete-scan', (_e, index) => {
+  const history = loadHistory();
+  if (index >= 0 && index < history.length) {
+    history.splice(index, 1);
+    saveHistory(history);
+  }
+  return history;
 });
 
 ipcMain.handle('screenshot', async () => {
